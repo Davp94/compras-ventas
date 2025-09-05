@@ -2,6 +2,8 @@ package com.blumbit.compras_ventas.dto.request;
 
 import java.math.BigDecimal;
 
+import com.blumbit.compras_ventas.entity.Movimiento;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,4 +24,14 @@ public class MovimientoRequest {
     private Long almacenId;
     private Long productoId;
     private Long notaId;
+
+    public static Movimiento toEntity(MovimientoRequest movimientoRequest){
+        return Movimiento.builder()
+        .cantidad(movimientoRequest.getCantidad())
+        .tipoMovimiento(movimientoRequest.getTipoMovimiento())
+        .precioUnitarioCompra(movimientoRequest.getPrecioUnitarioCompra())
+        .precioUnitarioVenta(movimientoRequest.getPrecioUnitarioVenta())
+        .observaciones(movimientoRequest.getObservaciones())
+        .build();
+    }
 }
