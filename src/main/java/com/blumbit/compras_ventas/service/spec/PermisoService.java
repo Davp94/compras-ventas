@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.blumbit.compras_ventas.dto.request.PermisoRequest;
 import com.blumbit.compras_ventas.dto.response.PermisoResponse;
-import com.blumbit.compras_ventas.entity.Permiso;
 
 public interface PermisoService {
 

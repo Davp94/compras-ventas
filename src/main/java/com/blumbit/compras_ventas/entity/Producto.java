@@ -28,6 +28,7 @@ public class Producto {
     private String marca;
     private BigDecimal precioVentaActual;
     private String estado;
+    private String imageUrl;
 
     @ManyToOne
     @JoinColumn(name = "categoria_id")
