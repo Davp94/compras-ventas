@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.blumbit.compras_ventas.dto.response.AlmacenResponse;
 import com.blumbit.compras_ventas.entity.Sucursal;
 import com.blumbit.compras_ventas.service.spec.SucursalService;
 
@@ -48,7 +49,6 @@ public class SucursalController {
 
     @PostMapping
     public Sucursal createSucrusal(@RequestBody Sucursal sucursal) {
-
         return sucursalService.crearSucursal(sucursal);
     }
 
@@ -61,4 +61,10 @@ public class SucursalController {
     public void deleteSucursal(@PathVariable Long id){
         sucursalService.deleteSucursalById(id);
     }
+
+    @GetMapping("/almacen/{id}")
+    public List<AlmacenResponse> getAlmacenesBySucursal(@PathVariable Long id) {
+        return sucursalService.getAlmacenesBySucursal(id);
+    }
+    
 }

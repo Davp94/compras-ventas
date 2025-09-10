@@ -33,7 +33,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/{id}")
-    public UsuarioResponse getMethodName(@PathVariable Long id) {
+    public UsuarioResponse findUsuarioById(@PathVariable Long id) {
         return usuarioService.findUsuarioById(id);
     }
 

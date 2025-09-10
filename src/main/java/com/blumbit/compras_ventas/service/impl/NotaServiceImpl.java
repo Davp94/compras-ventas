@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.blumbit.compras_ventas.dto.request.MovimientoRequest;
 import com.blumbit.compras_ventas.dto.request.NotaRequest;
+import com.blumbit.compras_ventas.dto.response.ClienteResponse;
 import com.blumbit.compras_ventas.dto.response.NotaResponse;
 import com.blumbit.compras_ventas.entity.Almacen;
 import com.blumbit.compras_ventas.entity.AlmacenProducto;
@@ -20,6 +21,7 @@ import com.blumbit.compras_ventas.entity.Nota;
 import com.blumbit.compras_ventas.entity.Producto;
 import com.blumbit.compras_ventas.entity.Usuario;
 import com.blumbit.compras_ventas.repository.AlmacenProductoRepository;
+import com.blumbit.compras_ventas.repository.ClienteRepository;
 import com.blumbit.compras_ventas.repository.MovimientoRepository;
 import com.blumbit.compras_ventas.repository.NotaRepository;
 import com.blumbit.compras_ventas.service.spec.NotaService;
@@ -34,6 +36,7 @@ public class NotaServiceImpl implements NotaService {
     private final NotaRepository notaRepository;
     private final MovimientoRepository movimientoRepository;
     private final AlmacenProductoRepository almacenProductoRepository;
+    private final ClienteRepository clienteRepository;
     private final EntityManager entityManager;
     
     @Override
@@ -102,6 +105,12 @@ public class NotaServiceImpl implements NotaService {
             throw new RuntimeException("Error al obtener el producto en almacen");
         }
       
+    }
+
+    @Override
+    public List<ClienteResponse> findAllClientes() {
+        return clienteRepository.findAll().stream()
+        .map(ClienteResponse::fromEntity).collect(Collectors.toList());
     }
 
 }

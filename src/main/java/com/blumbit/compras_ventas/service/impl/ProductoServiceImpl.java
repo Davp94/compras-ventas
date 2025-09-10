@@ -8,9 +8,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.blumbit.compras_ventas.common.dto.PageableRequest;
 import com.blumbit.compras_ventas.common.dto.PageableResponse;
+import com.blumbit.compras_ventas.common.dto.file.FileRequest;
+import com.blumbit.compras_ventas.common.dto.file.FileResponse;
 import com.blumbit.compras_ventas.dto.request.ProductoAlmacenRequest;
 import com.blumbit.compras_ventas.dto.request.ProductoRequest;
 import com.blumbit.compras_ventas.dto.response.producto.ProductoFilterCriteria;
@@ -20,9 +23,9 @@ import com.blumbit.compras_ventas.entity.AlmacenProducto;
 import com.blumbit.compras_ventas.entity.Categoria;
 import com.blumbit.compras_ventas.entity.Producto;
 import com.blumbit.compras_ventas.repository.AlmacenProductoRepository;
-import com.blumbit.compras_ventas.repository.AlmacenRepository;
 import com.blumbit.compras_ventas.repository.ProductoRepository;
 import com.blumbit.compras_ventas.repository.specification.ProductoSpecification;
+import com.blumbit.compras_ventas.service.spec.FileService;
 import com.blumbit.compras_ventas.service.spec.ProductoService;
 
 import jakarta.persistence.EntityManager;
@@ -35,6 +38,8 @@ public class ProductoServiceImpl implements ProductoService {
     private final ProductoRepository productoRepository;
 
     private final AlmacenProductoRepository almacenProductoRepository;
+
+    private final FileService fileService;
 
     private final EntityManager entityManager;
 
@@ -62,13 +67,16 @@ public class ProductoServiceImpl implements ProductoService {
     }
 
     @Override
+    @Transactional
     public ProductoResponse createProducto(ProductoRequest productoRequest) {
         try {
             Producto productoToCreate = ProductoRequest.toEntity(productoRequest);
             productoToCreate
                     .setCategoria(entityManager.getReference(Categoria.class, productoRequest.getCategoriaId()));
-            // TODO add file service
             productoToCreate.setImageUrl("add image url");
+            FileResponse createdFile = fileService.createFile(FileRequest.builder()
+                    .file(productoRequest.getImage()).build());
+            productoToCreate.setImageUrl(createdFile.getFilePath());
             return ProductoResponse.fromEntity(productoRepository.save(productoToCreate));
         } catch (Exception e) {
             throw e;
