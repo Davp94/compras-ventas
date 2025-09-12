@@ -1,0 +1,38 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: cv-postgres
+    environment:
+     POSTGRES_DB: compras_ventas_db
+     POSTGRES_USER: postgres
+     POSTGRES_PASSWORD: 123456
+    ports:
+     - "5433:5432"
+    volumes:
+     - postgres_data:/var/lib/postgresql/data
+    networks:
+     - cv-network
+    restart: unless-stopped
+  compras-ventas:
+    build: 
+     context: .
+     dockerfile: Dockerfile
+    container_name: compras-ventas-alpine
+    environment:
+     SPRING_PROFILES_ACTIVE: dev
+     FILE_PATH: /home/david/test
+    ports:
+     - "8080:8080" 
+    depends_on:
+     - postgres
+    networks:
+     - cv-network
+    restart: unless-stopped
+    volumes:
+     - ./files:/home/david/test
+volumes:
+ postgres_data:
+  driver: local
+networks:
+ cv-network:
+  driver: bridge   

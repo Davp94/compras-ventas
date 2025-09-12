@@ -3,6 +3,7 @@ package com.blumbit.compras_ventas.entity;
 import java.util.Set;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -39,7 +40,7 @@ public class Usuario {
     @OneToOne(mappedBy = "usuario")
     private Persona persona;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "rol_usuario",
         joinColumns = @JoinColumn(name="usuario_id"),
