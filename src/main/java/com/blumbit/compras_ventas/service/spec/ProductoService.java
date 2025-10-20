@@ -1,5 +1,7 @@
 package com.blumbit.compras_ventas.service.spec;
 
+import java.util.List;
+
 import com.blumbit.compras_ventas.common.dto.PageableRequest;
 import com.blumbit.compras_ventas.common.dto.PageableResponse;
 import com.blumbit.compras_ventas.dto.request.ProductoAlmacenRequest;
@@ -15,5 +17,6 @@ public interface ProductoService {
 
     ProductoResponse createProductoAlmacen(ProductoAlmacenRequest productoAlmacenRequest);
 
+    List<ProductoResponse> getAllProductosByAlmacen(Short almacenId);
     
 }

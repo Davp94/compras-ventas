@@ -11,6 +11,8 @@ public class AuthResponse {
 
     private String refreshToken;
 
+    private Long identifier;
+
     private long expiration;
 
 }

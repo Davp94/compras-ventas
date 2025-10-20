@@ -2,6 +2,9 @@ package com.blumbit.compras_ventas.entity;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -38,6 +41,7 @@ public class Usuario {
 
     //BIDIRECCIONAL
     @OneToOne(mappedBy = "usuario")
+    @JsonManagedReference("persona-usuario")
     private Persona persona;
 
     @ManyToMany(fetch = FetchType.EAGER)

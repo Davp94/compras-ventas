@@ -42,6 +42,7 @@ public class AuthService {
             return AuthResponse.builder()
                     .token(accesToken)
                     .refreshToken(refreshToken)
+                    .identifier(usuario.getId())
                     .expiration(expiration)
                     .build();
         } catch (Exception e) {
@@ -64,6 +65,7 @@ public class AuthService {
             String accesToken = jwtService.generateToken(usuario);
             return AuthResponse.builder()
                     .token(accesToken)
+                    .identifier(usuario.getId())
                     .expiration(expiration)
                     .build();
         } catch (Exception e) {

@@ -1,6 +1,7 @@
 package com.blumbit.compras_ventas.dto.response;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.blumbit.compras_ventas.entity.Usuario;
 
@@ -22,6 +23,7 @@ public class UsuarioResponse {
     private String apellidos;
     private String telefono;
     private String documentoIdentidad;
+    private String estado;
     private List<Short> roles;
 
     public static UsuarioResponse fromEntity(Usuario usuario){
@@ -31,7 +33,9 @@ public class UsuarioResponse {
                 .nombres(usuario.getPersona().getNombres())
                 .apellidos(usuario.getPersona().getApellidos())
                 .telefono(usuario.getPersona().getTelefono())
+                .estado(usuario.getEstado())
                 .documentoIdentidad(usuario.getPersona().getDocumentoIdentidad())
+                .roles(usuario.getRoles().stream().map(rol->rol.getId()).collect(Collectors.toList()))
                 .build();
     }
 }

@@ -1,5 +1,6 @@
 package com.blumbit.compras_ventas.service.impl;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
@@ -95,6 +96,11 @@ public class ProductoServiceImpl implements ProductoService {
         } catch (Exception e) {
             throw e;
         }
+    }
+
+    @Override
+    public List<ProductoResponse> getAllProductosByAlmacen(Short almacenId) {
+        return almacenProductoRepository.findByAlmacen_Id(almacenId).stream().map(res -> ProductoResponse.fromEntity(res.getProducto())).toList();
     }
 
 }

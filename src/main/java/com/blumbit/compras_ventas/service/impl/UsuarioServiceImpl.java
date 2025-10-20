@@ -9,10 +9,13 @@ import org.springframework.transaction.annotation.Transactional;
 import com.blumbit.compras_ventas.dto.request.UsuarioRequest;
 import com.blumbit.compras_ventas.dto.response.UsuarioResponse;
 import com.blumbit.compras_ventas.entity.Persona;
+import com.blumbit.compras_ventas.entity.Rol;
 import com.blumbit.compras_ventas.entity.Usuario;
 import com.blumbit.compras_ventas.repository.PersonaRepository;
 import com.blumbit.compras_ventas.repository.UsuarioRepository;
 import com.blumbit.compras_ventas.service.spec.UsuarioService;
+
+import jakarta.persistence.EntityManager;
 
 @Service
 public class UsuarioServiceImpl implements UsuarioService{
@@ -20,10 +23,12 @@ public class UsuarioServiceImpl implements UsuarioService{
     private final UsuarioRepository usuarioRepository;
 
     private final PersonaRepository personaRepository;
+    private final EntityManager entityManager;
 
-    public UsuarioServiceImpl(UsuarioRepository usuarioRepository, PersonaRepository personaRepository) {
+    public UsuarioServiceImpl(UsuarioRepository usuarioRepository, PersonaRepository personaRepository, EntityManager entityManager) {
         this.usuarioRepository = usuarioRepository;
         this.personaRepository = personaRepository;
+        this.entityManager = entityManager;
     }
 
     @Override
@@ -73,6 +78,11 @@ public class UsuarioServiceImpl implements UsuarioService{
          try {
             Usuario usuarioRetrieved = usuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
             usuarioRetrieved.setEmail(usuarioRequest.getCorreo());
+            if(usuarioRequest.getRoles() != null){
+            usuarioRetrieved.setRoles(usuarioRequest.getRoles().stream().map(rolId->
+                entityManager.getReference(Rol.class, rolId)
+            ).collect(Collectors.toSet()));
+            }
             Persona personaRetrieved = personaRepository.findById(usuarioRetrieved.getPersona().getId()).orElseThrow(() -> new RuntimeException("Persona no encontrado"));
             personaRetrieved.setDireccion(usuarioRequest.getDireccion());
             personaRetrieved.setTelefono(usuarioRequest.getTelefono());

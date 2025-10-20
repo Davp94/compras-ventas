@@ -12,8 +12,12 @@ import com.blumbit.compras_ventas.dto.response.producto.ProductoResponse;
 import com.blumbit.compras_ventas.service.spec.ProductoService;
 
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -56,6 +60,11 @@ public class ProductoController {
                 .sortOrder(sortOrder)
                 .build();
         return productoService.getProductsPagination(request);
+    }
+
+    @GetMapping("/almacen/{id}")
+    public List<ProductoResponse> getProductosByAlmacen(@PathVariable Short id) {
+        return productoService.getAllProductosByAlmacen(id);
     }
 
     @PostMapping
