@@ -64,15 +64,20 @@ public class NotaServiceImpl implements NotaService {
             //CREATE MOVIMIENTOS & validate stock
             List<Movimiento> movimientosSaved = new ArrayList<>();
             for(MovimientoRequest movimientoRequest : notaRequest.getMovimientos()){
-                if(validStock(movimientoRequest)){
-                    Movimiento movimientoToCreate = MovimientoRequest.toEntity(movimientoRequest);
+                 Movimiento movimientoToCreate = MovimientoRequest.toEntity(movimientoRequest);
                     movimientoToCreate.setAlmacen(entityManager.getReference(Almacen.class, movimientoRequest.getAlmacenId()));
                     movimientoToCreate.setNota(notaCreated);
                     movimientoToCreate.setProducto(entityManager.getReference(Producto.class, movimientoRequest.getProductoId()));
                     movimientosSaved.add(movimientoRepository.save(movimientoToCreate));
-                }else {
-                    throw new RuntimeException("error al validar stock");
-                }
+                // if(validStock(movimientoRequest)){
+                //     Movimiento movimientoToCreate = MovimientoRequest.toEntity(movimientoRequest);
+                //     movimientoToCreate.setAlmacen(entityManager.getReference(Almacen.class, movimientoRequest.getAlmacenId()));
+                //     movimientoToCreate.setNota(notaCreated);
+                //     movimientoToCreate.setProducto(entityManager.getReference(Producto.class, movimientoRequest.getProductoId()));
+                //     movimientosSaved.add(movimientoRepository.save(movimientoToCreate));
+                // }else {
+                //     throw new RuntimeException("error al validar stock");
+                // }
             }
             //UPDATE STOCK
             for (Movimiento movimiento : movimientosSaved){
@@ -103,8 +108,7 @@ public class NotaServiceImpl implements NotaService {
             && movimientoRequest.getCantidad() <= almacenProductoRepository.findByAlmacen_IdAndProducto_Id(movimientoRequest.getAlmacenId(), movimientoRequest.getProductoId()).get().getCantidad();
         } catch (Exception e) {
             throw new RuntimeException("Error al obtener el producto en almacen");
-        }
-      
+        } 
     }
 
     @Override
